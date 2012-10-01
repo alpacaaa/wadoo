@@ -1,0 +1,12 @@
+{
+    "name": "alpacaaa/wadoo",
+    "require": {
+    		"php": ">=5.3",
+        "dflydev/markdown": "1.0.*"
+    },
+	"autoload": {
+		"psr-0": {
+		    "Wadoo": "src"
+		}
+	}
+}

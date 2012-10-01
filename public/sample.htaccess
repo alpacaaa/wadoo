@@ -1,0 +1,13 @@
+Options +FollowSymlinks -Indexes
+
+<IfModule mod_rewrite.c>
+
+	RewriteEngine on
+	RewriteBase /wadoo/public
+
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^(.*\/?)$ ../index.php?action=compile&uri=$1&echo&%{QUERY_STRING}  [L]
+	RewriteRule ^$ ../index.php?action=compile&uri=index.html&echo&%{QUERY_STRING} [L]
+
+</IfModule>
