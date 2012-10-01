@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<data>
+  <file filename="config.xml">
+    <config>
+      <site>
+        <title>Wadoo</title>
+        <tagline>a simple bloggin platform for wadoo</tagline>
+      </site>
+      <author>
+        <name>Marco Sampellegrini</name>
+        <github>alpacaaa</github>
+      </author>
+    </config>
+  </file>
+  <folder path="pages">
+    <file filename="about.xml">
+      <entry show-in-menu="true">
+        <title handle="about-this-site">About</title>
+        <content markdown-process="true" processed="true"><h3>About this website</h3>
+
+<p>There's very little to say... but it looks good!</p>
+</content>
+      </entry>
+    </file>
+  </folder>
+  <folder path="posts">
+    <file filename="testing-a-little-more.xml">
+      <entry>
+        <title>Testing a little more...</title>
+        <date>2012-09-30</date>
+        <city>Italy</city>
+        <content>
+          <p>Markdown can be skipped entirely.</p>
+          <p>
+			And just get back to plain html. 
+			You choose which nodes should be processed as markdown with <code>@markdown-process</code>.
+		</p>
+        </content>
+        <related>
+          <item handle="welcome-to-wadoo"/>
+        </related>
+      </entry>
+    </file>
+    <file filename="welcome-to-wadoo.xml">
+      <entry>
+        <title>Welcome to Wadoo!</title>
+        <date>2011-10-01</date>
+        <content markdown-process="true" processed="true"><p>This is a very useless post.</p>
+
+<p>Testing that <a href="http://daringfireball.net/projects/markdown/">markdown</a> <em>works</em>.</p>
+</content>
+      </entry>
+    </file>
+  </folder>
+</data>

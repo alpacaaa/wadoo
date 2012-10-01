@@ -1,0 +1,10 @@
+<config>
+	<site>
+		<title>Wadoo</title>
+		<tagline>a simple bloggin platform for wadoo</tagline>
+	</site>
+	<author>
+		<name>Marco Sampellegrini</name>
+		<github>alpacaaa</github>
+	</author>
+</config>

@@ -1,0 +1,15 @@
+<entry>
+	<title>Testing a little more...</title>
+	<date>2012-09-30</date>
+	<city>Italy</city>
+	<content>
+		<p>Markdown can be skipped entirely.</p>
+		<p>
+			And just get back to plain html. 
+			You choose which nodes should be processed as markdown with <code>@markdown-process</code>.
+		</p>
+	</content>
+	<related>
+		<item handle="welcome-to-wadoo" />
+	</related>
+</entry>

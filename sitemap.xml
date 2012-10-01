@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemap>
+  <resource uri="index.html" template="templates/index.xsl"/>
+  <resource uri="blog/2012/testing-a-little-more/index.html" template="templates/post.xsl" filename="testing-a-little-more.xml"/>
+  <resource uri="blog/2011/welcome-to-wadoo/index.html" template="templates/post.xsl" filename="welcome-to-wadoo.xml"/>
+  <resource uri="about-this-site/index.html" template="templates/page.xsl" handle="about-this-site"/>
+</sitemap>

@@ -1,0 +1,8 @@
+<entry show-in-menu="true">
+	<title handle="about-this-site">About</title>
+	<content markdown-process="true">
+### About this website
+
+There's very little to say... but it looks good!
+	</content>
+</entry>

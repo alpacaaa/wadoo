@@ -1,0 +1,9 @@
+<entry>
+	<title>Welcome to Wadoo!</title>
+	<date>2011-10-01</date>
+	<content markdown-process="true">
+This is a very useless post.
+
+Testing that [markdown](http://daringfireball.net/projects/markdown/) *works*.
+	</content>
+</entry>
