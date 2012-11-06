@@ -35,7 +35,7 @@ Wadoo requires a webserver to run but this doesn't mean you'll find cool looking
 
 You can invoke different actions through the `?action` GET parameter. For example, to compile the file `about.html` you'll call:
 
-    index.php?action=compile&resource=about.html
+    index.php?action=compile&uri=about.html
 
 That will (re)compile the file `about.html`. Of course the `index.php` part can be skipped. Take a look at 
 the [Compilation tips and tricks](#compilation-tips) section for a simplified compilation workflow.
@@ -140,12 +140,12 @@ be the stylesheet used to generate the sitemap.
 
 ### Compile
 
-    ?action=compile&resource=uri
+    ?action=compile&uri=uri
 
 This is the core of Wadoo. While you can (sort of) live without the other two actions, this one is 
 required to compile the website. By default, the website will be compiled inside the `public` folder.
 
-If the `resource` parameter isn't provided, Wadoo will compile the whole website (every resource 
+If the `uri` parameter isn't provided, Wadoo will compile the whole website (every resource 
 present in `sitemap.xml`). Specifying the resource will make Wadoo compile 
 just that single file. That's all there is to it, really.
 
@@ -168,7 +168,7 @@ If you don't recompile the sitemap you won't be able to see the updated post –
 
 It's fine to use `&echo` while compiling during development because it let you quickly see what you're doing. 
 The problem is: all your generated html will contains links like `pages/works.html` but you can't follow them because 
-what you're after is something along the lines of `?action=compile&resource=pages/works.html&echo` (any reference to 
+what you're after is something along the lines of `?action=compile&uri=pages/works.html&echo` (any reference to 
 assets file will be broken too, as soon as you add folders to the mix).
 
 To overcome this limitation, there's a smart `.htaccess` file inside the `public` folder that will let you browse 
