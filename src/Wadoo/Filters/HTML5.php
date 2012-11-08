@@ -2,16 +2,18 @@
 
 	namespace Wadoo\Filters;
 
-	class HTML5 implements \Wadoo\Filter
+	class HTML5
 	{
 		public function register()
 		{
-			return 'compile.after';
+			return array(
+				'compile.after' => 'fixDoctype'
+			);
 		}
 
 		// code stolen from the html5_doctype extension from symphony cms
 		// https://github.com/domain7/html5_doctype/
-		public function fire($context)
+		public function fixDoctype($context)
 		{
 			// Parse only if $context['output'] exists and it's an HTML document
 			if(substr($context['output'], 0, 14) !== '<!DOCTYPE html') return $context;

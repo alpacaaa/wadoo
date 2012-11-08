@@ -29,11 +29,14 @@
 			$doc->formatOutput = true;
 			$doc->preserveWhiteSpace = false;
 
+			$context = array('file' => $file, 'document' => $doc, 'done' => false);
+			$context = $this->fire('before.load.document', $context);
+
+			if ($context['done']) return $context['document'];
+
 			$ret = $doc->load($file);
+			if (!$ret) return $this->throwEx();
 
-			if (!$ret) return self::throwEx();
-
-			$context = array('file' => $file, 'document' => $doc);
 			$context = $this->fire('load.document', $context);
 			return $context['document'];
 		}
@@ -47,14 +50,14 @@
 		 */
 		public function transform(\DOMDocument $xml, \DOMDocument $xsl, $params = array())
 		{
-			$proc = self::getProcessor();
+			$proc = $this->getProcessor();
 			$proc->importStylesheet($xsl);
 
 			if ($params) $proc->setParameter('', $params);
 			$ret = @$proc->transformToXML($xml);
 
 			if ($ret) return $ret;
-			self::throwEx();
+			$this->throwEx();
 		}
 
 		/**

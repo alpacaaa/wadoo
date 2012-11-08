@@ -12,7 +12,10 @@
 
 		/**
 		 * Holds registered filters
-		 * [event] => array(filter1, filter2)
+		 * [event] => array(
+		 *    array('object' => filter1, 'callback' => 'method'),
+		 *    array('object' => filter2, 'callback' => 'method')
+		 * )
 		 */
 		protected $filters = array();
 
@@ -206,25 +209,25 @@
 		 * Register filters that will be invoked during app execution.
 		 * Filters can alter pretty much anything and are used as extensions to the core.
 		 *
-		 * @param array $filters an array of Filter instances
-		 * @see Filter
+		 * @param array $filters an array of objects with a `register()` method
 		 */
 		public function registerFilters($filters = array())
 		{
 			foreach ($filters as $f)
 			{
-				if (!$f instanceof Filter)
-					throw new Exception(get_class($f). ' does not implement interface Wadoo\Filter');
+				$klass = get_class($f);
+
+				if (!method_exists($f, 'register'))
+					throw new Exception($klass. ' does not have a register method.');
 
 				$events = $f->register();
-				if (!is_array($events)) $events = array($events);
 
-				foreach ($events as $e)
+				foreach ($events as $e => $cb)
 				{
 					if (!isset($this->filters[$e]))
 						$this->filters[$e] = array();
 
-					$this->filters[$e][] = $f;
+					$this->filters[$e][] = array('object' => $f, 'callback' => $cb);
 				}
 			}
 		}
@@ -235,15 +238,19 @@
 		 * @param string $event
 		 * @param array $context
 		 * @return $context
-		 * @see Filter
 		 */
 		public function fire($event, $context)
 		{
 			if (!isset($this->filters[$event])) return $context;
 
-			foreach ($this->filters[$event] as $f)
+			foreach ($this->filters[$event] as $data)
 			{
-				$ret = $f->fire($context);
+				$f  = $data['object'];
+				$cb = $data['callback'];
+				if (!method_exists($f, $cb))
+					throw new Exception('Method '. $cb. ' not implemented in '. get_class($f));
+
+				$ret = $f->$cb($context);
 				if ($ret) $context = $ret;
 			}
 

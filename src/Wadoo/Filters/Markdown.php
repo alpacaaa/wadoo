@@ -3,9 +3,12 @@
 	namespace Wadoo\Filters;
 	use dflydev\markdown\MarkdownParser;
 
-	class Markdown implements \Wadoo\Filter
+	class Markdown
 	{
 		protected $markdown;
+		protected $extensions = array(
+			'markdown', 'md', 'mdown', 'mkdn', 'mkd', 'mdwn', 'mdtxt', 'mdtext'
+		);
 
 		public function __construct()
 		{
@@ -14,10 +17,29 @@
 
 		public function register()
 		{
-			return 'load.document';
+			return array(
+				'before.load.document' => 'processMarkdownFile',
+				'load.document' => 'processXML'
+			);
 		}
 
-		public function fire($context)
+		public function processMarkdownFile($context)
+		{
+			$file = $context['file'];
+			if (!$this->getSupportedExtension($file))
+				return $context;
+
+			$content = file_get_contents($file);
+			$html = $this->markdown->transformMarkdown($content);
+			$html = '<markdown processed="true">'. $html. '</markdown>';
+
+			$context['document']->loadXML($html);
+
+			$context['done'] = true;
+			return $context;
+		}
+
+		public function processXML($context)
 		{
 			$doc = $context['document'];
 			$xpath =  new \DOMXPath($doc);
@@ -44,5 +66,12 @@
 			}
 
 			return $context;
+		}
+
+		protected function getSupportedExtension($file)
+		{
+			$uniq = uniqid();
+			$file = str_replace($this->extensions, $uniq, $file);
+			return substr($file, -strlen($uniq)) == $uniq;
 		}
 	}
