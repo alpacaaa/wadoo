@@ -215,10 +215,8 @@
 		{
 			foreach ($filters as $f)
 			{
-				$klass = get_class($f);
-
 				if (!method_exists($f, 'register'))
-					throw new Exception($klass. ' does not have a register method.');
+					throw new Exception(get_class($f). ' does not have a register method.');
 
 				$events = $f->register();
 
