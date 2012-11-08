@@ -185,6 +185,20 @@ parameter like this: `?action=compile&root=http://www.production.mywebsite.com`.
 This trick works for any parameter. GET will always take precedence.
 
 
+### Filters
+
+Filters extend Wadoo functionalities. By default, it comes with two filters.
+
+- **HTML5 doctype**  
+Works pretty much the same as the [Symphony extension](https://github.com/domain7/html5_doctype/) 
+it is based upon.
+
+- **Markdown**  
+Turn markdown into html. It can either process specific nodes in your xml documents (just add a 
+`@markdown-process` attribute to target those elements) or files with markdown text only, which should just 
+have a valid extension (the most common are supported, i.e. `.markdown`, `md` and so on).
+
+
 ### Note to Symphony CMS users
 
 A few words to those enlightened people using Symphony CMS.

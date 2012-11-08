@@ -7,12 +7,15 @@
 	{
 		protected $markdown;
 		protected $extensions = array(
-			'markdown', 'md', 'mdown', 'mkdn', 'mkd', 'mdwn', 'mdtxt', 'mdtext'
+			'.markdown', '.md', '.mdown', '.mkdn', '.mkd', '.mdwn', '.mdtxt', '.mdtext'
 		);
+
+		private $uniq;
 
 		public function __construct()
 		{
 			$this->markdown = new MarkdownParser();
+			$this->uniq = uniqid();
 		}
 
 		public function register()
@@ -70,8 +73,7 @@
 
 		protected function getSupportedExtension($file)
 		{
-			$uniq = uniqid();
-			$file = str_replace($this->extensions, $uniq, $file);
-			return substr($file, -strlen($uniq)) == $uniq;
+			$file = str_replace($this->extensions, $this->uniq, $file);
+			return substr($file, -strlen($this->uniq)) == $this->uniq;
 		}
 	}
