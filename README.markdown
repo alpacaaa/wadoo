@@ -23,10 +23,10 @@ Wadoo requires PHP 5.3 and [composer](http://getcomposer.org/) for managing exte
 
 There's very little to do to start using Wadoo. Just run `composer install` inside the root folder and you're 
 good to go. If you've installed PHP 5.4 on your machine, it comes with an embedded webserver which you can use 
-right away to serve wadoo while in development. All you need to do is to `cd public` and `php -S localhost:8000 router.php`.
+right away to serve Wadoo while in development. All you need to do is to `cd public` and `php -S localhost:8000 router.php`.
 
 If you want to use Apache, there's a `sample.htaccess` (that should be renamed to `.htaccess` —
-see [Compilation tips and tricks](#compilation-tips)) inside `public/` where you have 
+see [Compilation tips and tricks](#compilation-tips-and-tricks)) inside `public/` where you have 
 to change `RewriteBase` according to your installation path.
 
 
@@ -180,7 +180,7 @@ To overcome this limitation, you can either run Wadoo with the embedded web serv
 enabled and the definitive links.
 
 ##### Embedded webserver
-This is the easiest, just open a terminal, `cd` to the wadoo directory and then `cd` to the public folder. Now run this command: 
+This is the easiest, just open a terminal, `cd` to the Wadoo directory and then `cd` to the public folder. Now run this command: 
 `php -S localhost:8000 router.php` and you should be able to see your changes as you develop at the address `http://localhost:8000`.
 
 ##### Apache .htaccess
