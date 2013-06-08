@@ -25,6 +25,11 @@
 		 */
 		protected $config  = array();
 
+		/**
+		 * Wadoo base path
+		 */
+		protected $path;
+
 		public function __construct($params = array())
 		{
 			$root = rtrim($_SERVER['HTTP_HOST'], '/'). dirname($_SERVER['PHP_SELF']);
@@ -38,6 +43,7 @@
 				'root.url' => $root
 			);
 
+			$this->path = realpath(__DIR__. '/../..'). '/';
 			$this->config = array_merge($default, $params);
 			$this->wadoo = new Wadoo($this);
 		}
@@ -74,7 +80,7 @@
 		 */
 		public function actionMergeData($options = array())
 		{
-			$dir = $this->get('data.folder');
+			$dir = $this->getPath($this->get('data.folder'));
 
 			if (!is_dir($dir))
 				throw new Exception('Folder <code>'. $dir. '</code> does not exist.');
@@ -100,7 +106,7 @@
 		 */
 		public function actionSitemap($options = array())
 		{
-			$tpl = isset($options['template']) ? $options['template'] : '';
+			$tpl = isset($options['template']) ? $this->getPath($options['template']) : '';
 
 			if (!$tpl || !file_exists($tpl))
 				throw new Exception(
@@ -109,8 +115,9 @@
 				);
 
 			$params = $this->getTransformationParams(array(), $options);
+			$dataFile = $this->getPath($this->get('data.file'));
 
-			$xml = $this->wadoo->loadDoc($this->get('data.file'));
+			$xml = $this->wadoo->loadDoc($dataFile);
 			$xsl = $this->wadoo->loadDoc($tpl);
 			$ret = $this->wadoo->transform($xml, $xsl, $params);
 
@@ -124,9 +131,9 @@
 		 */
 		public function actionCompile($options = array())
 		{
-			$public  = trim($this->get('public.folder'), '/'). '/';
-			$sitemapFile = $this->get('sitemap.file');
-			$data = $this->get('data.file');
+			$public  = $this->getPath(trim($this->get('public.folder'), '/')). '/';
+			$sitemapFile = $this->getPath($this->get('sitemap.file'));
+			$data = $this->getPath($this->get('data.file'));
 
 			if (!file_exists($data))
 				throw new Exception('<code>'. $data. '</code> not found.');
@@ -270,6 +277,17 @@
 			return $default;
 		}
 
+		/**
+		 * Return file path relative to Wadoo root.
+		 *
+		 * @param string $append path to append
+		 * @return string full path
+		 */
+		public function getPath($append = '')
+		{
+			return $this->path. $append;
+		}
+
 		protected function compileResource(\DOMElement $r, \DOMDocument $xml, $options = array())
 		{
 			$uri = $r->getAttribute('uri');
@@ -285,7 +303,7 @@
 
 			$params = $this->getTransformationParams($r->attributes, $options);
 
-			$xsl = $this->wadoo->loadDoc($xsl);
+			$xsl = $this->wadoo->loadDoc($this->getPath($xsl));
 			$ret = $this->wadoo->transform($xml, $xsl, $params);
 
 			$context = array(
@@ -303,7 +321,7 @@
 				if (!$msg)
 					$msg = "<code>{$file}</code> compiled succesfully.";
 
-				self::writeFile($file, $data);
+				self::writeFile($this->getPath($file), $data);
 				return $msg;
 			}
 
@@ -318,8 +336,12 @@
 
 		protected function getTransformationParams($attributes = array(), $options = array())
 		{
+			$root = $this->get('root.url');
+			if (php_sapi_name() !== 'cli-server')
+				$root .= '/'. $this->get('public.folder');
+
 			$params = array(
-				'root'  => $this->get('root.url'). '/'. $this->get('public.folder'),
+				'root'  => $root,
 				'today' => date('Y-m-d')
 			);
 
@@ -336,7 +358,7 @@
 
 			return $params;
 		}
-		
+
 		protected static function writeFile($path, $data)
 		{
 			if (substr($path, -1) == '/') $path .= 'index.html';

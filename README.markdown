@@ -22,7 +22,10 @@ nor does it enforce any kind of URL structure. Just do what you want with it.
 Wadoo requires PHP 5.3 and [composer](http://getcomposer.org/) for managing external dependencies.
 
 There's very little to do to start using Wadoo. Just run `composer install` inside the root folder and you're 
-good to go. There's a `sample.htaccess` (that should be renamed to `.htaccess` —
+good to go. If you've installed PHP 5.4 on your machine, it comes with an embedded webserver which you can use 
+right away to serve wadoo while in development. All you need to do is to `cd public` and `php -S localhost:8000 router.php`.
+
+If you want to use Apache, there's a `sample.htaccess` (that should be renamed to `.htaccess` —
 see [Compilation tips and tricks](#compilation-tips)) inside `public/` where you have 
 to change `RewriteBase` according to your installation path.
 
@@ -165,16 +168,25 @@ Now say the post you're editing has a `title/@handle` that you're using in your 
 If you don't recompile the sitemap you won't be able to see the updated post – that's when a `full-compile` can be handy.
 
 
-### <a name="compilation-tips"></a> Compilation tips and tricks
+### Compilation tips and tricks
 
 It's fine to use `&echo` while compiling during development because it lets you quickly see what you're doing. 
 The problem is: all your generated HTML will contains links like `pages/works.html` but you can't follow them because 
 what you're after is something along the lines of `?action=compile&uri=pages/works.html&echo` (any reference to 
 assets files will be broken too, as soon as you add folders to the mix).
 
-To overcome this limitation, there's a smart `.htaccess` file inside the `public` folder that will let you browse 
-the website with `&echo` always enabled and the definitive links. Just make sure you're browsing the website from the
-public folder (`http://localhost/path/to/wadoo/public`) or it won't work.
+To overcome this limitation, you can either run Wadoo with the embedded web server (requires PHP 5.4) or use the smart 
+`.htaccess` file inside the `public` folder. Either way, you'll be able to browse the website with `&echo` always 
+enabled and the definitive links.
+
+##### Embedded webserver
+This is the easiest, just open a terminal, `cd` to the wadoo directory and then `cd` to the public folder. Now run this command: 
+`php -S localhost:8000 router.php` and you should be able to see your changes as you develop at the address `http://localhost:8000`.
+
+##### Apache .htaccess
+Rename `sample.htaccess` to `.htaccess` and change `RewriteBase`. Just make sure you're browsing the website from the public folder 
+(`http://localhost/path/to/wadoo/public`) or it won't work.
+
 
 As a last note, I prefer using absolute links over relative links, especially with complex URL structures. 
 Wadoo provides a `$root` parameter that is the base URL upon which you can build all your links.
@@ -191,7 +203,7 @@ Filters extend Wadoo functionalities. By default, it comes with two filters.
 
 - **HTML5 doctype**  
 Works pretty much the same as the [Symphony extension](https://github.com/domain7/html5_doctype/) 
-it is based upon.
+it is based upon. Makes it possible to use the HTML5 doctype with XSLT 1.0.
 
 - **Markdown**  
 Turn markdown into html. It can either process specific nodes in your xml documents (just add a 
